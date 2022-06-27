@@ -80,8 +80,6 @@ class JrpcHttpRequestHandler implements HttpRequestHandlerInterface
             foreach ($this->middlewareRegistry->middlewares as $middleware) {
                 $middleware->handle($ctx);
             }
-
-            $response->end();
         } catch (Throwable $e) {
             $this->logger->error(
                 sprintf(
