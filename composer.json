@@ -1,0 +1,37 @@
+{
+  "name": "pingframework/jrpc",
+  "description": "Json RPC module for ping boot framework",
+  "keywords": [
+    "ping",
+    "framework",
+    "boot",
+    "jrpc"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Oleg Bronzov",
+      "email": "oleg.bronzov@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "pingframework/boot": "^0.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Pingframework\\Jrpc\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Pingframework\\Jrpc\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "tests": "phpunit --coverage-clover=coverage.xml"
+  }
+}
