@@ -22,11 +22,11 @@ declare(strict_types=1);
 
 namespace Pingframework\Jrpc;
 
+use Pingframework\Boot\Annotations\HttpRequestHandler;
 use Pingframework\Boot\Http\Server\HttpRequestHandlerInterface;
 use Pingframework\Jrpc\Middleware\JrpcMiddlewareRegistry;
 use Pingframework\Jrpc\Middleware\JrpcRequestContext;
 use Pingframework\Ping\Annotations\Inject;
-use Pingframework\Ping\Annotations\Service;
 use Psr\Log\LoggerInterface;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
@@ -37,7 +37,7 @@ use Throwable;
  * @copyright 2022
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-#[Service(HttpRequestHandlerInterface::class)]
+#[HttpRequestHandler]
 class JrpcHttpRequestHandler implements HttpRequestHandlerInterface
 {
     public const CONFIG_JRPC_METHOD         = 'jrpc.method';
