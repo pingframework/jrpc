@@ -35,7 +35,7 @@ class JrpcResponseRootSchema
     public string $jsonrpc = '2.0';
     #[JsonProperty]
     public ?int $id = null;
-    #[JsonProperty(omitempty: true)]
+    #[JsonProperty(omitempty: false)]
     public mixed $result = null;
     #[JsonProperty(omitempty: true)]
     public ?JRPCResponseRootErrorSchema $error = null;
