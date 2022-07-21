@@ -26,7 +26,9 @@ use Pingframework\Boot\Annotations\HttpRequestHandler;
 use Pingframework\Boot\Http\Server\HttpRequestHandlerInterface;
 use Pingframework\Jrpc\Middleware\JrpcMiddlewareRegistry;
 use Pingframework\Jrpc\Middleware\JrpcRequestContext;
+use Pingframework\Jrpc\Schema\JrpcResponseRootErrorSchema;
 use Pingframework\Ping\Annotations\Inject;
+use Pingframework\Ping\Utils\ObjectMapper\ObjectMapper;
 use Psr\Log\LoggerInterface;
 use Swoole\Http\Request;
 use Swoole\Http\Response;
@@ -46,6 +48,7 @@ class JrpcHttpRequestHandler implements HttpRequestHandlerInterface
 
     public function __construct(
         public readonly JrpcMiddlewareRegistry $middlewareRegistry,
+        public readonly ObjectMapper           $objectMapper,
         public readonly LoggerInterface        $logger,
         #[Inject(self::CONFIG_JRPC_METHOD)]
         public readonly string                 $method = "POST",
@@ -92,8 +95,8 @@ class JrpcHttpRequestHandler implements HttpRequestHandlerInterface
                     $e->getTraceAsString(),
                 )
             );
-            $response->status(500);
-            $response->end($this->displayErrorsFlag ? $e->getMessage() : 'Internal server error');
+            $response->status(200);
+            $response->end($this->objectMapper->unmapToJson(JrpcResponseRootErrorSchema::fromException($e)));
             return;
         }
     }

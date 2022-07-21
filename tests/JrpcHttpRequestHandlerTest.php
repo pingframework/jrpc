@@ -38,6 +38,29 @@ class JrpcHttpRequestHandlerTest extends TestCase
         $this->assertEquals(42, $app->getApplicationContext()->get(TestController::class)->baz);
     }
 
+    public function testHandleError()
+    {
+        $app = TestApplication::build();
+
+        $json = $this->callJrpcMethod($app->getApplicationContext(), 'test.test2', [
+            'user_id'  => 42,
+            'nickname' => 'test',
+            'arr'      => [1, 2, 3],
+        ]);
+
+        $this->assertIsString($json);
+        $data = json_decode($json, true);
+        $this->assertIsArray($data);
+        $this->assertArrayHasKey('jsonrpc', $data);
+        $this->assertArrayHasKey('result', $data);
+        $this->assertArrayHasKey('error', $data);
+        $this->assertArrayHasKey('id', $data);
+        $this->assertEquals('2.0', $data['jsonrpc']);
+        $this->assertEquals(42, $data['id']);
+        $this->assertEquals(-32603, $data['error']['code']);
+        $this->assertEquals('Json RPC method test.test2 not found', $data['error']['message']);
+    }
+
     public function callJrpcMethod(DependencyContainerInterface $c, string $method, array $payload = []): string
     {
         $request = new RequestMock();
