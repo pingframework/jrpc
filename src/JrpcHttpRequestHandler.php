@@ -27,6 +27,7 @@ use Pingframework\Boot\Http\Server\HttpRequestHandlerInterface;
 use Pingframework\Jrpc\Middleware\JrpcMiddlewareRegistry;
 use Pingframework\Jrpc\Middleware\JrpcRequestContext;
 use Pingframework\Jrpc\Schema\JrpcResponseRootErrorSchema;
+use Pingframework\Jrpc\Schema\JrpcResponseRootSchema;
 use Pingframework\Ping\Annotations\Inject;
 use Pingframework\Ping\Utils\ObjectMapper\ObjectMapper;
 use Psr\Log\LoggerInterface;
@@ -96,7 +97,9 @@ class JrpcHttpRequestHandler implements HttpRequestHandlerInterface
                 )
             );
             $response->status(200);
-            $response->end($this->objectMapper->unmapToJson(JrpcResponseRootErrorSchema::fromException($e)));
+            $response = new JrpcResponseRootSchema();
+            $response->error = JrpcResponseRootErrorSchema::fromException($e);
+            $response->end($this->objectMapper->unmapToJson($response));
             return;
         }
     }
