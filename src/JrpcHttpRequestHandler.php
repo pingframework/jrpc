@@ -97,9 +97,9 @@ class JrpcHttpRequestHandler implements HttpRequestHandlerInterface
                 )
             );
             $response->status(200);
-            $response = new JrpcResponseRootSchema();
-            $response->error = JrpcResponseRootErrorSchema::fromException($e);
-            $response->end($this->objectMapper->unmapToJson($response));
+            $responseSchema = new JrpcResponseRootSchema();
+            $responseSchema->error = JrpcResponseRootErrorSchema::fromException($e);
+            $response->end($this->objectMapper->unmapToJson($responseSchema));
             return;
         }
     }
